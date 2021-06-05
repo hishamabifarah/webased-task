@@ -1,17 +1,24 @@
-import React from 'react';
-import { View, StyleSheet, Text , SafeAreaView } from 'react-native';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getNews } from '../redux/actions/newsActions';
+import News from '../components/News';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
+
+    const { headlines } = useSelector(state => state.newsReducer);
+    const dispatch = useDispatch();
+    const fetchNews = () => dispatch(getNews());
+    useEffect(() => {
+        fetchNews();
+    }, []);
 
     return (
-        <View>
-            <Text>Home Screen</Text>
-        </View>
+        <News
+            headlines={headlines}
+            title="Today's Picks"
+        />
+
     )
 }
-
-const styles = StyleSheet.create({
-
-})
 
 export default HomeScreen;
