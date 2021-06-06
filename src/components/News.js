@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
-import {COLORS} from '../constants';
+import { COLORS } from '../constants';
 import Articles from '../components/Articles';
 
 const News = ({ title, headlines }) => {
-    
+
     const navigation = useNavigation();
 
     if (!headlines.length) {
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginBottom: 10,
         color: COLORS.primary,
-        textAlign:'center'
+        textAlign: 'center'
     }
 });
 

@@ -1,15 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet , View } from 'react-native';
 
-
-
-export const Divider =  () => {
-
-return (
-  <View
-  style={styles.divider}
-/>
-)
+export const Divider = () => {
+  return (
+    <View
+      style={styles.divider}
+    />
+  )
 }
 
 export const styles = StyleSheet.create({

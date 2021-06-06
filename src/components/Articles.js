@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
-
+import { StyleSheet, View, Text } from 'react-native';
+import styled from 'styled-components/native';
 // dayjs
 import dayjs from 'dayjs';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
@@ -12,37 +12,46 @@ const Articles = ({ article }) => {
     // const time = dayjs(publishedAt).format('L LT')();
 
     return (
-        <View style={styles.articleContainer}>
-            <Image style={styles.articleImage} source={{ uri: urlToImage }} />
+        <Container>
+            <Image  source={{ uri: urlToImage }} />
             <Text style={styles.articleTitle}>
                 {title}
             </Text>
             <Text numberOfLines={2} style={styles.articleDescription}>
                 {description}
             </Text>
-            <Text style={styles.articleTitle}>
+            {/* <Text style={styles.articleTitle}>
                 {Object.entries(source).map(([key, v]) => {
                     return <View key={key}><Text>{v}</Text></View>
                 })}
-            </Text>
+            </Text> */}
             <Text style={styles.articleTitle}>
-                {/* {time} */}
+                {publishedAt}
             </Text>
-        </View>
+        </Container>
     )
 }
 
+const Container = styled.View`
+    borderWidth: 0,
+    width: '100%',
+    padding: 5px
+`;
+
+const Image = styled.Image`
+    width:100%;
+    height:200px
+`;
+
+const Title = styled.Text `
+    padding: 5px,
+    fontSize: 17px,
+    color: 'black',
+    backgroundColor: 'white',
+    fontWeight: 'bold'
+`;
 
 const styles = StyleSheet.create({
-    articleContainer: {
-        borderWidth: 0,
-        width: '100%',
-        padding: 5
-    },
-    articleImage: {
-        height: 200,
-        width: '100%',
-    },
     articleTitle: {
         padding: 5,
         fontSize: 17,

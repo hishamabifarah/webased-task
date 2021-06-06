@@ -1,52 +1,65 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, Image } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Divider } from '../elements/Divider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dayjs from 'dayjs';
+import styled from 'styled-components/native';
 
 const NewsDetailScreen = ({ route }) => {
 
     const storeData = async (value) => {
         try {
-            let obj = [
-                {
-                    title: value.title,
-                    image: value.urlToImage,
-                    description: value.description,
-                    source: value.source,
-                    timeStamp: dayjs()
-                }
-            ]
-
-            let allArr = await AsyncStorage.getItem('History');
-            if (allArr === null) {
-                console.log('ISNULL');
-                var historyArr = [];
-                historyArr.push(obj);
-
-                console.log('historyArr', historyArr);
-                await AsyncStorage.setItem('History', JSON.stringify(historyArr));
-            } else {
-                console.log('NOT NULL')
-                var newArr = await AsyncStorage.getItem('History');
-                console.log('newArr' , newArr);
-                // newArr.concat(obj);
-                var finalArr = newArr.concat(obj)
-                await AsyncStorage.setItem('History', JSON.stringify(finalArr));
+            let obj = {
+                title: value.title,
+                image: value.urlToImage,
+                description: value.description,
+                source: value.source,
+                timeStamp: dayjs()
             }
 
-            // historyArr.push(obj);
 
-          //  alerts.push({num : 3, app:'helloagain_again',message:'yet another message'});
-        } catch (e) {
-            // saving error
+
+            // get history array from localstorage
+            // check if exists, if not create a new array
+            const existingHistory = await AsyncStorage.getItem('history');
+            let newHistory = JSON.parse(existingHistory);
+            if (!newHistory) {
+                newHistory = [];
+            }
+
+            // check if article exists in array 
+            var title = obj.title;
+            if(newHistory.some(article => article.title === title)){
+                alert("Object found inside the array.");
+                try {
+                    await AsyncStorage.removeItem(title);
+                    console.log('Data removed')
+                }
+                catch(exception) {
+                    console.log(exception)
+                }
+            } else{
+                alert("Object not found.");
+            }
+
+            newHistory.push(obj);
+            
+            await AsyncStorage.setItem('history', JSON.stringify(newHistory))
+                .then(() => {
+                    console.log('success saving history')
+                })
+                .catch(() => {
+                    console.log('error saving history')
+                })
+        } catch (err) {
+            console.log('error', err);
         }
-    }
+    } // end storeData()
+
 
     const { data } = route.params;
     storeData(data);
 
-    // console.log('data', data);
     // let author = '';
     // if(data.author){
     //     author = 'BY' & data.author.toUpperCase();
@@ -56,41 +69,43 @@ const NewsDetailScreen = ({ route }) => {
 
     return (
         <ScrollView>
-            <Text style={styles.title}>{data.title}</Text>
+            <Title>{data.title}</Title>
             <Divider />
-            <Text style={styles.author}>{data.author}</Text>
-            <Text style={styles.date}>{data.publihedAt}</Text>
-            <Image style={styles.image} source={{ uri: data.urlToImage }} />
-            <Text style={styles.description}>{data.description}</Text>
+            <Author>{data.author}</Author>
+            <Date>{data.publishedAt} / {data.source.name}</Date>
+            <Image source={{ uri: data.urlToImage }} />
+            <Description>{data.description}</Description>
         </ScrollView>
     )
 }
 
-const styles = StyleSheet.create({
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        margin: 24
-    },
-    author: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        margin: 24
-    },
-    date: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        margin: 8
-    },
-    image: {
-        width: '100%',
-        height: 200
-    },
-    description: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        margin: 24
-    }
-})
+const Title = styled.Text`
+    font-size: 24px;
+    margin: 24px;
+    font-weight: bold;
+`;
+
+const Author = styled.Text`
+    font-size: 16px;
+    margin: 24px;
+    font-weight: bold;
+`;
+
+const Image = styled.Image`
+    width:100%;
+    height:200px
+`;
+
+const Date = styled.Text`
+    font-size: 16px;
+    margin: 24px;
+    font-weight: bold;
+`;
+
+const Description = styled.Text`
+    font-size: 18px;
+    margin: 24px;
+    font-weight: bold;
+`;
 
 export default NewsDetailScreen;

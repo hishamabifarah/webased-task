@@ -1,42 +1,36 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import News from '../components/News';
 
 const HistoryScreen = () => {
-    
-    let history = '';
+
+    const sortArray = (arr) => {
+        const newArr = arr.sort((a,b) => new Date(b.timeStamp).getTime() - new Date(a.timeStamp).getTime());
+        return newArr;
+    };
+
+    const [history, setHistory] = useState([])
+
     const getData = async () => {
         try {
-            const value = await AsyncStorage.getItem('History')
+            const value = await AsyncStorage.getItem('history')
             if (value !== null) {
-                // value previously stored
-                // console.log('history' , JSON.parse(value));
-                history = JSON.parse(value)
-                console.log('value in get data', history);
+                setHistory(JSON.parse(value));
             }
         } catch (e) {
-            // error reading value
             console.log('error history', e);
         }
     }
-
-
     useEffect(() => {
         getData();
     }, []);
 
-
     return (
         <News
-            headlines={history}
-            title="Today's Picks"
+            headlines={sortArray(history)}
+            title="History"
         />
     )
 }
-
-const styles = StyleSheet.create({
-
-})
 
 export default HistoryScreen;

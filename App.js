@@ -21,7 +21,7 @@ const App = () => {
           <Stack.Screen name={"HomeScreen"} component={Tabs} options={{ headerShown: false }} />
           <Stack.Screen name={"SourcesScreen"} component={NewsSourcesScreen} />
           <Stack.Screen name={"HistoryScreen"} component={NewsHistoryScreen} />
-          <Stack.Screen name={"SourceScreen"} component={NewsSourceScreen} options={{ headerShown: false }} />
+          <Stack.Screen name={"SourceScreen"} component={NewsSourceScreen} options={{ title: '' }}  />
           <Stack.Screen name={"DetailsScreen"} component={NewsDetailScreen} options={{ title: '' }} />
         </Stack.Navigator>
       </NavigationContainer>
