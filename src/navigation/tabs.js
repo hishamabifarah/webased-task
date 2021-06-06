@@ -1,8 +1,10 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeScreen, NewsSourcesScreen, NewsHistoryScreen } from '../screens';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { COLORS } from '../constants'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { COLORS } from '../constants';
+
 const Tab = createBottomTabNavigator();
 
 const tabBarOptions = {
@@ -32,7 +34,7 @@ const Tabs = () => {
                 component={NewsSourcesScreen}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialIcons name="favorite" color={color} size={size} />
+                        <FontAwesome name="th-large" color={color} size={size} />
                     ),
                 }}
             />

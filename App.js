@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 
-import { HomeScreen, NewsHistoryScreen, NewsSourcesScreen } from './src/screens';
+import { NewsHistoryScreen, NewsSourcesScreen , NewsDetailScreen , NewsSourceScreen } from './src/screens';
 import Tabs from './src/navigation/tabs';
 
 // redux
@@ -16,14 +16,13 @@ const App = () => {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator
-          screenOptions={{
-            headerShown: false
-          }}
           initialRouteName={"HomeScreen"}
         >
-          <Stack.Screen name={"HomeScreen"} component={Tabs} />
+          <Stack.Screen name={"HomeScreen"} component={Tabs} options={{ headerShown: false }} />
           <Stack.Screen name={"SourcesScreen"} component={NewsSourcesScreen} />
           <Stack.Screen name={"HistoryScreen"} component={NewsHistoryScreen} />
+          <Stack.Screen name={"SourceScreen"} component={NewsSourceScreen} options={{ headerShown: false }} />
+          <Stack.Screen name={"DetailsScreen"} component={NewsDetailScreen} options={{ title: '' }} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -1,10 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { withNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
+import {COLORS} from '../constants';
 import Articles from '../components/Articles';
 
-const News = ({ title, headlines, navigation }) => {
-    console.log('headlines news', headlines)
+const News = ({ title, headlines }) => {
+    
+    const navigation = useNavigation();
+
     if (!headlines.length) {
         return null;
     }
@@ -14,13 +17,13 @@ const News = ({ title, headlines, navigation }) => {
             <FlatList
                 data={headlines}
                 showsHorizontalScrollIndicator={false}
-                keyExtractor={(headline) => headline.publihedAt}
+                keyExtractor={(headline) => headline.title}
                 renderItem={({ item }) => {
                     return (
                         <TouchableOpacity onPress={() =>
-                            navigation.navigate('NewsDetailScreen',
+                            navigation.navigate('DetailsScreen',
                                 {
-                                    data: item,
+                                    data: item
                                 })}>
                             <Articles article={item} />
                         </TouchableOpacity>
@@ -37,13 +40,13 @@ const styles = StyleSheet.create({
         marginTop: 50
     },
     title: {
-        fontSize: 18,
+        fontSize: 28,
         fontWeight: 'bold',
         marginLeft: 15,
         marginBottom: 10,
-        color: '#00bcd4',
+        color: COLORS.primary,
         textAlign:'center'
     }
 });
 
-export default (News);
+export default News;

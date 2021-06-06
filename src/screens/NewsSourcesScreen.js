@@ -1,53 +1,80 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Text ,FlatList} from 'react-native';
+import { View, StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native';
 import { getSources } from '../redux/actions/newsActions';
 import { useSelector, useDispatch } from 'react-redux';
+import { Divider } from '../elements/Divider';
 
- const FlatListItemSeparator = () => {
-    return (
-      <View
-        style={{
-          height:0,
-          margin: 8,
-          backgroundColor: "#000",
-        }}
-      />
-    );
-  }
+const NewsSourceScreen = ({ navigation }) => {
 
-const NewsSourceScreen = () => {
+  const { sources } = useSelector(state => state.newsReducer);
+  const dispatch = useDispatch();
+  const fetchSources = () => dispatch(getSources());
 
-    const { sources } = useSelector(state => state.newsReducer);
-    const dispatch = useDispatch();
-    const fetchSources = () => dispatch(getSources());
-    useEffect(() => {
-        fetchSources();
-    }, []);
+  useEffect(() => {
+    fetchSources();
+  }, []);
 
-    console.log('sources screen' , sources)
-
-        return (
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={sources}
+        ItemSeparatorComponent={Divider}
+        renderItem={({ item }) => {
+          return (
             <View style={styles.container}>
-              <FlatList
-                data={sources}
-                ItemSeparatorComponent = {FlatListItemSeparator}
-                renderItem={({item}) => <View><Text style={styles.item}>{item.name}</Text></View>}
-              />
+              <View style={styles.projectRow}>
+                <View style={styles.projectText}>
+                  <Text style={styles.itemName}>{item.name}</Text>
+                </View>
+                <TouchableOpacity onPress={() =>
+                  navigation.navigate('SourceScreen',
+                    {
+                      data: item
+                    })}>
+                  <View style={styles.moreContainer}>
+                    <Text>VIEW</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           );
-    
+        }}
+      />
+    </View>
+  );
+
 }
 
 const styles = StyleSheet.create({
-    container: {
-     flex: 1,
-     paddingTop: 22
-    },
-    item: {
-      padding: 20,
-      fontSize: 18,
-      height: 70,
-    },
-  });
+  container: {
+    flex: 1,
+    marginTop: 28
+  },
+  projectText: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+
+  projectRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    padding: 15,
+  },
+
+  itemName: {
+    fontSize: 18,
+    color: '#4A90E2',
+  },
+
+  itemDetails: {
+    fontSize: 12,
+    color: '#BBBBBB',
+  },
+
+  moreContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+});
 
 export default NewsSourceScreen;

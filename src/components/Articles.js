@@ -8,7 +8,7 @@ import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 const Articles = ({ article }) => {
 
     dayjs.extend(LocalizedFormat)
-    const { title, description, urlToImage, source, publishedAt } = article;
+    const { title, description, urlToImage, source, publishedAt  } = article;
     // const time = dayjs(publishedAt).format('L LT')();
 
     return (

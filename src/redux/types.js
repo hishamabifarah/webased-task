@@ -1,2 +1,3 @@
 export const GET_NEWS = "GET_NEWS";
-export const GET_SOURCES = "GET_SOURCES"
+export const GET_SOURCES = "GET_SOURCES";
+export const GET_SOURCES_HEADLINES = "GET_SOURCES_HEADLINES";
