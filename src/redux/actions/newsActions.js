@@ -8,7 +8,7 @@ import newsApi from '../../api/newsApi';
 
 const API_KEY = '5c383187e89f4da1b5d974e0b478c0ab';
 const PARAMS = 'page=1';
-const country = 'us';
+const country = 'eg';
 const category = 'sports';
 
 export const getSourcesHeadlines = (source) => {

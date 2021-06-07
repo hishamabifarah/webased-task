@@ -1,41 +1,38 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import styled from 'styled-components/native';
-// dayjs
-import dayjs from 'dayjs';
-import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import moment from 'moment/min/moment-with-locales';
 
 const Articles = ({ article }) => {
 
-    dayjs.extend(LocalizedFormat)
-    const { title, description, urlToImage, source, publishedAt  } = article;
-    // const time = dayjs(publishedAt).format('L LT')();
+    const { title, description, urlToImage, source, publishedAt } = article;
+    const time = moment(publishedAt).format('LLL');
 
     return (
         <Container>
-            <Image  source={{ uri: urlToImage }} />
-            <Text style={styles.articleTitle}>
+            <Image source={{ uri: urlToImage }} />
+            <Title>
                 {title}
-            </Text>
-            <Text numberOfLines={2} style={styles.articleDescription}>
+            </Title>
+            <Description numberOfLines={2}>
                 {description}
-            </Text>
-            {/* <Text style={styles.articleTitle}>
+            </Description>
+            {/* <Source>
                 {Object.entries(source).map(([key, v]) => {
                     return <View key={key}><Text>{v}</Text></View>
                 })}
-            </Text> */}
-            <Text style={styles.articleTitle}>
-                {publishedAt}
-            </Text>
+            </Source> */}
+            <Date>
+                {time}
+            </Date>
         </Container>
     )
 }
 
 const Container = styled.View`
-    borderWidth: 0,
-    width: '100%',
-    padding: 5px
+    border-width: 0px;
+    width: 100%;
+    padding: 5px;
 `;
 
 const Image = styled.Image`
@@ -43,28 +40,35 @@ const Image = styled.Image`
     height:200px
 `;
 
-const Title = styled.Text `
-    padding: 5px,
-    fontSize: 17px,
-    color: 'black',
-    backgroundColor: 'white',
-    fontWeight: 'bold'
+const Title = styled.Text`
+    padding: 5px;
+    font-size: 17px;
+    color: black;
+    background-color: white;
+    font-weight: bold;
 `;
 
-const styles = StyleSheet.create({
-    articleTitle: {
-        padding: 5,
-        fontSize: 17,
-        color: 'black',
-        backgroundColor: 'white',
-        fontWeight: 'bold'
-    },
-    articleDescription: {
-        fontSize: 15,
-        padding: 5,
-        color: 'black',
-        backgroundColor: 'white',
-    }
-})
+const Date = styled.Text`
+    padding: 5px;
+    font-size: 17px;
+    color: black;
+    background-color: white;
+    font-weight: bold;
+`;
+
+const Source = styled.Text`
+    padding: 5px;
+    font-size: 17px;
+    color: black;
+    background-color: white;
+    font-weight: bold;
+`;
+
+const Description = styled.Text`
+    font-size:15px;
+    padding: 5px;
+    color:black;
+    background-color:white
+`;
 
 export default Articles;

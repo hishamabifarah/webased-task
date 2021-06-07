@@ -4,6 +4,7 @@ import { Divider } from '../elements/Divider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dayjs from 'dayjs';
 import styled from 'styled-components/native';
+import moment from 'moment/min/moment-with-locales';
 
 const NewsDetailScreen = ({ route }) => {
 
@@ -14,10 +15,9 @@ const NewsDetailScreen = ({ route }) => {
                 image: value.urlToImage,
                 description: value.description,
                 source: value.source,
-                timeStamp: dayjs()
+                timeStamp: dayjs(),
+                source: value.source,
             }
-
-
 
             // get history array from localstorage
             // check if exists, if not create a new array
@@ -30,20 +30,27 @@ const NewsDetailScreen = ({ route }) => {
             // check if article exists in array 
             var title = obj.title;
             if(newHistory.some(article => article.title === title)){
-                alert("Object found inside the array.");
+                console.log("Object found inside the array.");
+                // remove article before inserting new one
                 try {
-                    await AsyncStorage.removeItem(title);
+                    for (let i = 0; i < newHistory.length; i++) {
+                        if(newHistory[i].title == title) {
+                            newHistory.splice(i, 1);
+                       }
+                    }
                     console.log('Data removed')
                 }
-                catch(exception) {
-                    console.log(exception)
+                catch(err) {
+                    console.log(err)
                 }
             } else{
-                alert("Object not found.");
+                console.log("Object not found.");
             }
 
+            // push new object into history array
             newHistory.push(obj);
             
+            // save new object into local storage
             await AsyncStorage.setItem('history', JSON.stringify(newHistory))
                 .then(() => {
                     console.log('success saving history')
@@ -60,19 +67,21 @@ const NewsDetailScreen = ({ route }) => {
     const { data } = route.params;
     storeData(data);
 
-    // let author = '';
-    // if(data.author){
-    //     author = 'BY' & data.author.toUpperCase();
-    // }else{
-    //     author = 'No Author Available';
-    // }
+    let author = '';
+    if(data.author === null){
+        author = 'No Author Available';
+    }else{
+        author = `BY ${data.author.toUpperCase()}`
+    }
+
+    const time = moment(data.publishedAt).format('LLL');
 
     return (
         <ScrollView>
             <Title>{data.title}</Title>
             <Divider />
-            <Author>{data.author}</Author>
-            <Date>{data.publishedAt} / {data.source.name}</Date>
+            <Author>{author}</Author>
+            <Date>{time} / {data.source.name}</Date>
             <Image source={{ uri: data.urlToImage }} />
             <Description>{data.description}</Description>
         </ScrollView>

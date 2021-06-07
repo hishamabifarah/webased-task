@@ -12,7 +12,6 @@ const NewsSourceScreen = ({route}) => {
 
     const fetchSourceNews = () => dispatch(getSourcesHeadlines(data.id));
     useEffect(() => {
-        
         fetchSourceNews();
     }, []);
 
